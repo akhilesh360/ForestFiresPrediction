@@ -1,0 +1,91 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body Styling */
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #74ebd5, #acb6e5);
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Login Container */
+.login {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+/* Heading Styles */
+.login h1 {
+    font-size: 2rem;
+    color: #4a90e2;
+    margin-bottom: 20px;
+}
+
+.login h2 {
+    font-size: 1.5rem;
+    color: #333;
+    margin-top: 20px;
+}
+
+/* Form Styling */
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+form input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+form input::placeholder {
+    color: #aaa;
+}
+
+form button {
+    background-color: #4a90e2;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+form button:hover {
+    background-color: #357abd;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .login {
+        width: 90%;
+        padding: 20px;
+        box-shadow: none; /* Reduce shadow for smaller screens */
+        text-align: left; /* Align text for better readability */
+    }
+
+    form input,
+    form button {
+        font-size: 0.9rem; /* Adjust font size for smaller screens */
+        padding: 8px; /* Reduce padding for inputs and buttons */
+        margin-bottom: 10px; /* Reduce spacing between inputs */
+        width: calc(100% - 20px); /* Ensure inputs fit within the container */
+        max-width: none; /* Remove any width restrictions */
+        margin-left:auto;margin-right:auto;/*Center align elements*/
+    }
+}
