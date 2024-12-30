@@ -1,1 +1,104 @@
-<h1>Heee</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FWI Prediction</title>
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body Styling */
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #00ABE4, #FFD43A);
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Login Container */
+        .login {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 90%;
+            max-width: 400px;
+        }
+
+        /* Heading Styles */
+        .login h1 {
+            font-size: 2rem;
+            color: #00ABE4;
+            margin-bottom: 20px;
+        }
+
+        .login h2 {
+            font-size: 1.5rem;
+            color: #FFD43A;
+            margin-top: 20px;
+        }
+
+        /* Form Styling */
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        form input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+
+        form input::placeholder {
+            color: #aaa;
+        }
+
+        form button {
+            background-color: #FFD43A;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        form button:hover {
+            background-color: #E6B800; /* Slightly darker gold for hover effect */
+        }
+    </style>
+</head>
+<body>
+    <div class="login">
+        <h1>FWI Prediction</h1>
+        <!-- Main Input For Receiving Query to our ML -->
+        <form action="{{ url_for('predict_datapoint') }}" method="post">
+            <input type="text" name="Temperature" placeholder="Temperature" required /><br>
+            <input type="text" name="RH" placeholder="RH" required /><br>
+            <input type="text" name="Ws" placeholder="Ws" required /><br>
+            <input type="text" name="Rain" placeholder="Rain" required /><br>
+            <input type="text" name="FFMC" placeholder="FFMC" required /><br>
+            <input type="text" name="DMC" placeholder="DMC" required /><br>
+            <input type="text" name="ISI" placeholder="ISI" required /><br>
+            <input type="text" name="Classes" placeholder="Classes" required /><br>
+            <input type="text" name="Region" placeholder="Region" required /><br>
+            <button type="submit">Predict</button>
+        </form>
+        
+        <h2 style="color: black;">The FWI prediction is {{result}}%</h2>
+        
+    </div>
+</body>
+</html>
