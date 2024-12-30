@@ -1,1 +1,105 @@
-<h1>OPOP</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Algeria Wild Fires Prediction</title>
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body Styling */
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #00ABE4, #FFD43A);
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Login Container */
+        .login {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 90%;
+            max-width: 600px;
+        }
+
+        /* Heading Styles */
+        .login h1 {
+            font-size: 2.5rem;
+            color: #00ABE4;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .login h2 {
+            font-size: 1.5rem;
+            color: #FFD43A;
+            margin-top: 20px;
+        }
+
+        /* Paragraph Styling */
+        .login p {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        /* List Styling */
+        .login ul {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .login ul li {
+            margin-bottom: 10px;
+        }
+
+        /* Button Styling */
+        .login button {
+            background-color: #FFD43A;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .login button:hover {
+            background-color: #E6B800; /* Slightly darker gold for hover effect */
+        }
+    </style>
+</head>
+<body>
+    <div class="login">
+        <h1>Welcome to Algeria Wild Fires Prediction</h1>
+        <p>Algerian wildfires are fueled by climate change, drought, hot winds, and human factors. Dense vegetation exacerbates the fires, causing significant damage. Recent advancements in firefighting and public awareness have reduced the impact, with no fatalities reported in 2024.</p>
+        <p>A predictive model helps anticipate wildfire risks by using key factors - temperature (°C), relative humidity (RH %), wind speed (Ws in km/h), rainfall (mm) and others. This data-driven approach supports timely interventions and resource allocation to mitigate wildfire impacts.</p>
+        <ul>
+            <li><strong>Temperature:</strong> The temperature in degrees Celsius.</li>
+            <li><strong>RH:</strong> Relative Humidity in percentage.</li>
+            <li><strong>Ws:</strong> Wind speed in km/h.</li>
+            <li><strong>Rain:</strong> Rainfall in mm.</li>
+            <li><strong>FFMC:</strong> Fine Fuel Moisture Code.</li>
+            <li><strong>DMC:</strong> Duff Moisture Code.</li>
+            <li><strong>ISI:</strong> Initial Spread Index.</li>
+            <li><strong>Classes:</strong> Fire weather index classes.</li>
+            <li><strong>Region:</strong> The region in Algeria.</li>
+        </ul>
+        <form action="{{ url_for('home') }}">
+            <button type="submit">Start</button>
+        </form>
+    </div>
+</body>
+</html>
