@@ -12,6 +12,4 @@ The project involves the following steps:
 4. Model Serialization (Pickling)
 5. Deployment on AWS Elastic Beanstalk
 
-## License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
