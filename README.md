@@ -1,19 +1,3 @@
-# Algeria Wild Fires Prediction
-
-This project predicts the risk of wildfires in Algeria using various environmental factors. The application is built using Flask and deployed on AWS Elastic Beanstalk.
-Link: http://forestfiresprediction-env-1.eba-djbn9yjg.us-east-2.elasticbeanstalk.com/
-
-## Project Overview
-
-The project involves the following steps:
-1. Data Cleaning
-2. Feature Engineering
-3. Model Training and Testing
-4. Model Serialization (Pickling)
-5. Deployment on AWS Elastic Beanstalk
-
-
-
 ```markdown
 # Forest Fires Prediction
 
@@ -25,15 +9,15 @@ A Flask-based web application that predicts wildfire risk in Algeria using meteo
 
 ## Table of Contents
 
-1. [Project Overview](#project-overview)  
-2. [Repository Structure](#repository-structure)  
-3. [Dataset](#dataset)  
-4. [Modeling](#modeling)  
-5. [Web Application](#web-application)  
-6. [Installation & Usage](#installation--usage)  
-7. [Deployment](#deployment)  
-8. [Future Work](#future-work)  
-9. [License](#license)  
+1. [Project Overview](#project-overview)
+2. [Repository Structure](#repository-structure)
+3. [Dataset](#dataset)
+4. [Modeling](#modeling)
+5. [Web Application](#web-application)
+6. [Installation & Usage](#installation--usage)
+7. [Deployment](#deployment)
+8. [Future Work](#future-work)
+9. [License](#license)
 
 ---
 
@@ -44,32 +28,30 @@ Wildfires depend on factors such as temperature, humidity, wind speed, and rainf
 - Cleans and preprocesses the Algerian Forest Fires dataset.  
 - Engineers features (e.g., seasonal encodings, fire weather indices).  
 - Trains regression models (Linear Regression, Random Forest, Gradient Boosting) to predict burned area.  
-- Serializes (pickles) the best-performing model.  
+- Serializes (`pickle`) the best-performing model.  
 - Serves predictions via a Flask app deployed on AWS Elastic Beanstalk.
-
----
 
 ## Repository Structure
 
 ```
 
 ForestFiresPrediction/
-├── .ebextensions/                # AWS Elastic Beanstalk configuration
-├── models/                       # Serialized (pickled) model files
-├── notebooks/                    # Jupyter notebooks for exploration & modeling
-│   └── ALL\_Regression.ipynb      # End-to-end regression pipeline
-├── templates/                    # Flask HTML templates
-│   ├── index.html                # Input form
-│   └── result.html               # Prediction display
+├── .ebextensions/              # AWS Elastic Beanstalk configuration
+│   └── python.config
+├── models/                     # Serialized (pickled) model files
+│   └── best\_model.pkl
+├── notebooks/                  # Jupyter notebooks for exploration & modeling
+│   └── ALL\_Regression.ipynb    # End-to-end regression pipeline
+├── templates/                  # Flask HTML templates
+│   ├── index.html              # Input form
+│   └── result.html             # Prediction display
 ├── Algerian\_forest\_fires\_dataset\_UPDATE.csv
-├── application.py                # Flask entry point
-├── requirements.txt              # Python dependencies
-├── README.md                     # Project documentation
-└── LICENSE                       # MIT License
+├── application.py              # Flask entry point
+├── requirements.txt            # Python dependencies
+├── README.md                   # Project documentation (this file)
+└── LICENSE                     # MIT License
 
 ````
-
----
 
 ## Dataset
 
@@ -81,100 +63,157 @@ ForestFiresPrediction/
   - **Temporal:** `month`, `day` (categorical)  
 - **Target:** `area` (burned area in hectares)
 
----
-
 ## Modeling
 
-- **Exploration & Cleaning:** Performed in `notebooks/ALL_Regression.ipynb`.  
-- **Feature Engineering:**  
-  - Encode `month`/`day` as numeric or one-hot vectors.  
-  - Scale continuous variables for regression.  
-- **Algorithms Evaluated:**  
-  - Linear Regression  
-  - Random Forest Regressor  
-  - Gradient Boosting Regressor  
-- **Evaluation Metrics:**  
-  - K-fold cross-validation  
-  - Mean Squared Error (MSE)  
-- **Best Model:** Saved under `models/` (e.g., `best_model.pkl`).
+```python
+# Example snippet from notebooks/ALL_Regression.ipynb
+import pandas as pd
+from sklearn.model_selection import train_test_split, cross_val_score
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.metrics import mean_squared_error
 
----
+data = pd.read_csv('Algerian_forest_fires_dataset_UPDATE.csv')
+# Preprocessing
+data = pd.get_dummies(data, columns=['month','day'], drop_first=True)
+X = data.drop('area', axis=1)
+y = data['area']
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Model training
+model = RandomForestRegressor(n_estimators=100, random_state=42)
+model.fit(X_train, y_train)
+y_pred = model.predict(X_test)
+print("MSE:", mean_squared_error(y_test, y_pred))
+
+# Serialize best model
+import pickle
+with open('models/best_model.pkl', 'wb') as f:
+    pickle.dump(model, f)
+````
 
 ## Web Application
 
-- **Framework:** Flask  
-- **Routes:**  
-  - `GET /` — Renders input form.  
-  - `POST /predict` — Returns predicted burned area.  
-- **Templates:**  
-  - `index.html` — Parameter input fields.  
-  - `result.html` — Displays prediction and summary.
+```python
+# application.py
+from flask import Flask, render_template, request
+import pickle
+import numpy as np
 
----
+app = Flask(__name__)
+model = pickle.load(open('models/best_model.pkl', 'rb'))
+
+@app.route('/')
+def home():
+    return render_template('index.html')
+
+@app.route('/predict', methods=['POST'])
+def predict():
+    # Collect inputs from form
+    int_features = [float(request.form.get(f)) for f in ['FFMC','DMC','DC','ISI','temp','RH','wind','rain']]
+    # Add month/day dummies if needed
+    final_features = np.array(int_features).reshape(1, -1)
+    prediction = model.predict(final_features)[0]
+    return render_template('result.html', prediction=round(prediction, 2))
+
+if __name__ == "__main__":
+    app.run(debug=True)
+```
+
+### HTML Templates
+
+**templates/index.html**
+
+```html
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Forest Fire Risk Prediction</title>
+  </head>
+  <body>
+    <h1>Predict Burned Area (hectares)</h1>
+    <form action="/predict" method="post">
+      {% for feature in ['FFMC','DMC','DC','ISI','temp','RH','wind','rain'] %}
+      <label>{{ feature }}:</label>
+      <input type="text" name="{{ feature }}"><br>
+      {% endfor %}
+      <button type="submit">Predict</button>
+    </form>
+  </body>
+</html>
+```
+
+**templates/result.html**
+
+```html
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Prediction Result</title>
+  </head>
+  <body>
+    <h1>Predicted Burned Area: {{ prediction }} hectares</h1>
+    <a href="/">Make another prediction</a>
+  </body>
+</html>
+```
 
 ## Installation & Usage
 
-1. **Clone the repository**  
-   ```bash
-   git clone https://github.com/akhilesh360/ForestFiresPrediction.git
-   cd ForestFiresPrediction
-````
+```bash
+# Clone the repository
+git clone https://github.com/akhilesh360/ForestFiresPrediction.git
+cd ForestFiresPrediction
 
-2. **Create & activate a virtual environment**
+# Create & activate virtual environment
+python3 -m venv venv
+source venv/bin/activate
 
-   ```bash
-   python3 -m venv venv
-   source venv/bin/activate
-   ```
-3. **Install dependencies**
+# Install dependencies
+pip install -r requirements.txt
 
-   ```bash
-   pip install -r requirements.txt
-   ```
-4. **Run the Flask app locally**
+# Run locally
+python application.py
+# Open http://127.0.0.1:5000/ in your browser
+```
 
-   ```bash
-   python application.py
-   ```
+## requirements.txt
 
-   Open [http://127.0.0.1:5000/](http://127.0.0.1:5000/) in your browser.
-
----
+```text
+Flask==2.2.2
+numpy==1.23.5
+pandas==1.5.3
+scikit-learn==1.2.2
+gunicorn==20.1.0
+```
 
 ## Deployment
 
-Configuration for AWS Elastic Beanstalk is provided in `.ebextensions/`. To deploy:
+AWS Elastic Beanstalk configuration is in `.ebextensions/python.config`:
 
-1. **Install & configure the EB CLI**
-2. **Initialize & create environment**
+```yaml
+option_settings:
+  aws:elasticbeanstalk:container:python:
+    WSGIPath: application.py
+```
 
-   ```bash
-   eb init -p python-3.7 forestfiresprediction
-   eb create forestfiresprediction-env
-   ```
-3. **Deploy updates**
-
-   ```bash
-   eb deploy
-   ```
-
-The live app is at:
-[http://forestfiresprediction-env-1.eba-djbn9yjg.us-east-2.elasticbeanstalk.com/](http://forestfiresprediction-env-1.eba-djbn9yjg.us-east-2.elasticbeanstalk.com/)
-
----
+```bash
+# Initialize & deploy
+eb init -p python-3.7 forestfiresprediction
+eb create forestfiresprediction-env
+eb deploy
+```
 
 ## Future Work
 
-* **Model Enhancements:** Try XGBoost or LightGBM; include spatial features (elevation, vegetation type).
-* **Feature Expansion:** Add lagged weather variables; incorporate satellite-derived indices.
-* **User Experience:** Interactive risk maps; form validation and error handling.
-
----
+* Try XGBoost or LightGBM; include spatial features (elevation, vegetation type).
+* Feature expansion: lagged weather variables; satellite-derived indices.
+* UX: interactive risk maps; form validation.
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License. See the LICENSE file for details.
 
 ```
 ```
-
