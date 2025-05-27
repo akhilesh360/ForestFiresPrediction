@@ -1,4 +1,4 @@
-```markdown
+````markdown
 # Forest Fires Prediction
 
 A Flask-based web application that predicts wildfire risk in Algeria using meteorological and environmental factors. The model is trained on the Algerian Forest Fires dataset and deployed on AWS Elastic Beanstalk.
@@ -33,35 +33,36 @@ Wildfires depend on factors such as temperature, humidity, wind speed, and rainf
 
 ## Repository Structure
 
-```
+The project is organized as follows:
 
+```text
 ForestFiresPrediction/
-├── .ebextensions/              # AWS Elastic Beanstalk configuration
-│   └── python.config
-├── models/                     # Serialized (pickled) model files
-│   └── best\_model.pkl
-├── notebooks/                  # Jupyter notebooks for exploration & modeling
-│   └── ALL\_Regression.ipynb    # End-to-end regression pipeline
-├── templates/                  # Flask HTML templates
-│   ├── index.html              # Input form
-│   └── result.html             # Prediction display
-├── Algerian\_forest\_fires\_dataset\_UPDATE.csv
-├── application.py              # Flask entry point
-├── requirements.txt            # Python dependencies
-├── README.md                   # Project documentation (this file)
-└── LICENSE                     # MIT License
-
+├── .ebextensions/             # AWS Elastic Beanstalk settings (configuration files)
+│   └── python.config          # Specifies WSGI path for deployment
+├── models/                    # Pickled model artifacts
+│   └── best_model.pkl         # Serialized model used by the application
+├── notebooks/                 # Data exploration and model development
+│   └── ALL_Regression.ipynb   # End-to-end regression workflow (EDA, training, evaluation)
+├── templates/                 # Flask HTML templates for the user interface
+│   ├── index.html             # Form for feature input
+│   └── result.html            # Displays prediction results
+├── Algerian_forest_fires_dataset_UPDATE.csv  # Raw dataset file
+├── application.py             # Flask application entry point
+├── requirements.txt           # Project dependencies
+├── README.md                  # Project documentation (this file)
+└── LICENSE                    # License information (MIT License)
 ````
 
 ## Dataset
 
-- **Source:** Algerian Forest Fires Dataset  
-- **File:** `Algerian_forest_fires_dataset_UPDATE.csv`  
-- **Features:**  
-  - **Meteorological:** `temp`, `RH` (relative humidity), `wind`, `rain`  
-  - **Fire Weather Indices:** `FFMC`, `DMC`, `DC`, `ISI`  
-  - **Temporal:** `month`, `day` (categorical)  
-- **Target:** `area` (burned area in hectares)
+* **Source:** Algerian Forest Fires Dataset
+* **File:** `Algerian_forest_fires_dataset_UPDATE.csv`
+* **Features:**
+
+  * **Meteorological:** `temp`, `RH` (relative humidity), `wind`, `rain`
+  * **Fire Weather Indices:** `FFMC`, `DMC`, `DC`, `ISI`
+  * **Temporal:** `month`, `day` (categorical)
+* **Target:** `area` (burned area in hectares)
 
 ## Modeling
 
@@ -89,7 +90,7 @@ print("MSE:", mean_squared_error(y_test, y_pred))
 import pickle
 with open('models/best_model.pkl', 'wb') as f:
     pickle.dump(model, f)
-````
+```
 
 ## Web Application
 
