@@ -7,6 +7,9 @@ A Flask-based web application that predicts wildfire risk in Algeria using meteo
 
 ---
 
+<img width="1709" alt="Screenshot 2025-05-26 at 10 43 22 PM" src="https://github.com/user-attachments/assets/65590329-398e-460d-9875-b9234dbad514" />
+
+
 ## Table of Contents
 
 1. [Project Overview](#project-overview)
