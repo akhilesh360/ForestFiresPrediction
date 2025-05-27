@@ -66,6 +66,7 @@ ForestFiresPrediction/
   * **Fire Weather Indices:** `FFMC`, `DMC`, `DC`, `ISI`
   * **Temporal:** `month`, `day` (categorical)
 * **Target:** `area` (burned area in hectares)
+![image](https://github.com/user-attachments/assets/8c293e83-5dcc-41b0-8356-c7799633a980)
 
 ## Modeling
 
