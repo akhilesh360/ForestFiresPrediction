@@ -13,6 +13,7 @@ The project involves the following steps:
 5. Deployment on AWS Elastic Beanstalk
 
 
+
 # Forest Fires Prediction
 
 A Flask-based web application that predicts wildfire risk in Algeria using environmental and meteorological factors. The model is trained on the Algerian Forest Fires dataset and deployed on AWS Elastic Beanstalk.
@@ -41,7 +42,7 @@ Wildfires are influenced by many factors such as temperature, humidity, wind spe
 
 1. Cleans and preprocesses the Algerian Forest Fires dataset.  
 2. Engineers relevant features (e.g., seasonal encodings, fire weather indices).  
-3. Trains regression models (e.g., Linear Regression, Random Forest, Gradient Boosting) to predict burned area.  
+3. Trains regression models (Linear Regression, Random Forest, Gradient Boosting) to predict burned area.  
 4. Serializes (pickles) the best-performing model.  
 5. Serves predictions via a Flask app deployed on AWS Elastic Beanstalk.
 
@@ -61,9 +62,7 @@ ForestFiresPrediction/
 ├── README.md # Project documentation
 └── LICENSE # MIT License
 
-markdown
-Copy
-Edit
+
 
 ---
 
@@ -81,18 +80,18 @@ Edit
 
 ## Modeling
 
-- **Exploratory Data Analysis & Cleaning** in `notebooks/ALL_Regression.ipynb`.  
+- **EDA & Cleaning** in `notebooks/ALL_Regression.ipynb`.  
 - **Feature Engineering:**  
-  - Encode `month` and `day` as numeric or one-hot.  
-  - Scale continuous variables.  
+  - Encode `month`/`day` as numeric or one-hot  
+  - Scale continuous variables  
 - **Algorithms Tried:**  
   - Linear Regression  
   - Random Forest Regressor  
   - Gradient Boosting Regressor  
 - **Evaluation:**  
   - K-fold cross-validation  
-  - Mean Squared Error (MSE) on validation folds and test set  
-- **Best Model:** Serialized in `models/` (e.g., `best_model.pkl`).
+  - Mean Squared Error (MSE)  
+- **Best Model:** Saved under `models/` (e.g. `best_model.pkl`)
 
 ---
 
@@ -100,7 +99,7 @@ Edit
 
 - **Framework:** Flask  
 - **Endpoints:**  
-  - `/` – Form to input environmental parameters  
+  - `/` – Input form for environmental parameters  
   - `/predict` – Returns predicted burned area  
 - **Templates:**  
   - `templates/index.html` – Input form  
@@ -110,7 +109,7 @@ Edit
 
 ## Installation & Usage
 
-1. **Clone the repository**  
+1. **Clone the repo**  
    ```bash
    git clone https://github.com/akhilesh360/ForestFiresPrediction.git
    cd ForestFiresPrediction
@@ -133,45 +132,32 @@ bash
 Copy
 Edit
 python application.py
-Navigate to http://127.0.0.1:5000/ in your browser.
+Then open http://127.0.0.1:5000/ in your browser.
 
 Deployment
-Configuration for AWS Elastic Beanstalk is provided in the .ebextensions/ folder. To deploy:
+AWS Elastic Beanstalk config is in .ebextensions/. To deploy:
 
-Install and configure the EB CLI.
+Install & configure the EB CLI.
 
-Initialize your EB project:
+Initialize and create environment:
 
 bash
 Copy
 Edit
 eb init -p python-3.7 forestfiresprediction
 eb create forestfiresprediction-env
-Deploy changes:
+Deploy updates:
 
 bash
 Copy
 Edit
 eb deploy
-The live app is available at:
-http://forestfiresprediction-env-1.eba-djbn9yjg.us-east-2.elasticbeanstalk.com/
+Live app: http://forestfiresprediction-env-1.eba-djbn9yjg.us-east-2.elasticbeanstalk.com/
 
 Future Work
-Model Improvements:
+Modeling: Try XGBoost or LightGBM; add spatial features (elevation, vegetation type)
 
-Try XGBoost or LightGBM for potential gains.
+Features: Incorporate lagged weather variables; satellite-derived indices
 
-Incorporate spatial data (elevation, vegetation type).
-
-Feature Expansion:
-
-Add lagged weather variables.
-
-Use remote sensing (satellite-derived indices).
-
-UX Enhancements:
-
-Interactive visualizations (e.g., Map of risk predictions).
-
-Input validation and error handling.
+UX: Interactive risk maps; input validation
 
