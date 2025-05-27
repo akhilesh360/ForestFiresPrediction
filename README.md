@@ -13,3 +13,165 @@ The project involves the following steps:
 5. Deployment on AWS Elastic Beanstalk
 
 
+# Forest Fires Prediction
+
+A Flask-based web application that predicts wildfire risk in Algeria using environmental and meteorological factors. The model is trained on the Algerian Forest Fires dataset and deployed on AWS Elastic Beanstalk.
+
+**Live Demo:** http://forestfiresprediction-env-1.eba-djbn9yjg.us-east-2.elasticbeanstalk.com/
+
+---
+
+## Table of Contents
+
+- [Project Overview](#project-overview)  
+- [Repository Structure](#repository-structure)  
+- [Dataset](#dataset)  
+- [Modeling](#modeling)  
+- [Web Application](#web-application)  
+- [Installation & Usage](#installation--usage)  
+- [Deployment](#deployment)  
+- [Future Work](#future-work)  
+- [License](#license)  
+
+---
+
+## Project Overview
+
+Wildfires are influenced by many factors such as temperature, humidity, wind speed, and rainfall. This project:
+
+1. Cleans and preprocesses the Algerian Forest Fires dataset.  
+2. Engineers relevant features (e.g., seasonal encodings, fire weather indices).  
+3. Trains regression models (e.g., Linear Regression, Random Forest, Gradient Boosting) to predict burned area.  
+4. Serializes (pickles) the best-performing model.  
+5. Serves predictions via a Flask app deployed on AWS Elastic Beanstalk.
+
+---
+
+## Repository Structure
+
+ForestFiresPrediction/
+├── .ebextensions/ # AWS Elastic Beanstalk configuration
+├── models/ # Serialized (pickled) model files
+├── notebooks/ # Jupyter notebooks for exploration & modeling
+│ └── ALL_Regression.ipynb # End-to-end regression modeling pipeline
+├── templates/ # Flask HTML templates
+├── Algerian_forest_fires_dataset_UPDATE.csv
+├── application.py # Flask application entry point
+├── requirements.txt # Python dependencies
+├── README.md # Project documentation
+└── LICENSE # MIT License
+
+markdown
+Copy
+Edit
+
+---
+
+## Dataset
+
+- **Source:** Algerian Forest Fires Dataset  
+- **File:** `Algerian_forest_fires_dataset_UPDATE.csv`  
+- **Key Features:**  
+  - `temp`, `RH` (relative humidity), `wind`, `rain`  
+  - `FFMC`, `DMC`, `DC`, `ISI` (fire weather indices)  
+  - `month`, `day` (encoded as categorical)  
+- **Target:** `area` (burned area in hectares)
+
+---
+
+## Modeling
+
+- **Exploratory Data Analysis & Cleaning** in `notebooks/ALL_Regression.ipynb`.  
+- **Feature Engineering:**  
+  - Encode `month` and `day` as numeric or one-hot.  
+  - Scale continuous variables.  
+- **Algorithms Tried:**  
+  - Linear Regression  
+  - Random Forest Regressor  
+  - Gradient Boosting Regressor  
+- **Evaluation:**  
+  - K-fold cross-validation  
+  - Mean Squared Error (MSE) on validation folds and test set  
+- **Best Model:** Serialized in `models/` (e.g., `best_model.pkl`).
+
+---
+
+## Web Application
+
+- **Framework:** Flask  
+- **Endpoints:**  
+  - `/` – Form to input environmental parameters  
+  - `/predict` – Returns predicted burned area  
+- **Templates:**  
+  - `templates/index.html` – Input form  
+  - `templates/result.html` – Displays prediction  
+
+---
+
+## Installation & Usage
+
+1. **Clone the repository**  
+   ```bash
+   git clone https://github.com/akhilesh360/ForestFiresPrediction.git
+   cd ForestFiresPrediction
+Create & activate a virtual environment
+
+bash
+Copy
+Edit
+python3 -m venv venv
+source venv/bin/activate
+Install dependencies
+
+bash
+Copy
+Edit
+pip install -r requirements.txt
+Run the Flask app locally
+
+bash
+Copy
+Edit
+python application.py
+Navigate to http://127.0.0.1:5000/ in your browser.
+
+Deployment
+Configuration for AWS Elastic Beanstalk is provided in the .ebextensions/ folder. To deploy:
+
+Install and configure the EB CLI.
+
+Initialize your EB project:
+
+bash
+Copy
+Edit
+eb init -p python-3.7 forestfiresprediction
+eb create forestfiresprediction-env
+Deploy changes:
+
+bash
+Copy
+Edit
+eb deploy
+The live app is available at:
+http://forestfiresprediction-env-1.eba-djbn9yjg.us-east-2.elasticbeanstalk.com/
+
+Future Work
+Model Improvements:
+
+Try XGBoost or LightGBM for potential gains.
+
+Incorporate spatial data (elevation, vegetation type).
+
+Feature Expansion:
+
+Add lagged weather variables.
+
+Use remote sensing (satellite-derived indices).
+
+UX Enhancements:
+
+Interactive visualizations (e.g., Map of risk predictions).
+
+Input validation and error handling.
+
