@@ -1,4 +1,4 @@
-````markdown
+
 # Forest Fires Prediction
 
 A Flask-based web application that predicts wildfire risk in Algeria using meteorological and environmental factors. The model is trained on the Algerian Forest Fires dataset and deployed on AWS Elastic Beanstalk.
@@ -217,4 +217,4 @@ eb deploy
 This project is licensed under the MIT License. See the LICENSE file for details.
 
 ```
-```
+
